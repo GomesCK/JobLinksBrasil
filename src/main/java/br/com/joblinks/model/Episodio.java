@@ -23,7 +23,7 @@ public class Episodio {
     private Double avaliacao;
     private LocalDate dataLancamento;
     @ManyToOne
-    private Serie serie;
+    private Cadastros cadastros;
 
     public Episodio(){}
 
@@ -53,12 +53,12 @@ public class Episodio {
         this.id = id;
     }
 
-    public Serie getSerie() {
-        return serie;
+    public Cadastros getSerie() {
+        return cadastros;
     }
 
-    public void setSerie(Serie serie) {
-        this.serie = serie;
+    public void setSerie(Cadastros cadastros) {
+        this.cadastros = cadastros;
     }
 
     public Integer getTemporada() {
