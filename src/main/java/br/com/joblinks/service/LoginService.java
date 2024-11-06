@@ -3,8 +3,8 @@ package br.com.joblinks.service;
 import br.com.joblinks.dto.EpisodioDTO;
 import br.com.joblinks.dto.LoginDTO;
 import br.com.joblinks.model.Categoria;
-import br.com.joblinks.model.Serie;
-import br.com.joblinks.repository.SerieRepository;
+import br.com.joblinks.model.Cadastros;
+import br.com.joblinks.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +13,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class SerieService {
+public class LoginService {
 
     @Autowired
-    private SerieRepository repositorio;
+    private LoginRepository repositorio;
 
     public List<LoginDTO> obterTodasAsSeries() {
         return converteDados(repositorio.findAll());
@@ -26,9 +26,9 @@ public class SerieService {
         return converteDados(repositorio.findTop5ByOrderByAvaliacaoDesc());
     }
 
-    private List<LoginDTO> converteDados(List<Serie> series) {
+    private List<LoginDTO> converteDados(List<Cadastros> series) {
       return series.stream()
-              .map(s -> new LoginDTO(s.getId(), s.getTitulo(), s.getTotalTemporadas(), s.getAvaliacao(), s.getGenero(), s.getAtores(), s.getPoster(), s.getSinopse()))
+              .map(s -> new LoginDTO(s.getId(), s.getNome(), s.getEmail(), s.getSenha(), s.getConfirmarSenha()))
               .collect(Collectors.toList());
     }
 
@@ -37,20 +37,20 @@ public class SerieService {
     }
 
     public LoginDTO obterPorId(Long id) {
-        Optional<Serie> serie = repositorio.findById(id);
+        Optional<Cadastros> serie = repositorio.findById(id);
 
         if (serie.isPresent()) {
-            Serie s = serie.get();
-            return new LoginDTO(s.getId(), s.getTitulo(), s.getTotalTemporadas(), s.getAvaliacao(), s.getGenero(), s.getAtores(), s.getPoster(), s.getSinopse());
+            Cadastros s = serie.get();
+            return new LoginDTO(s.getId(), s.getNome(),  s.getEmail(), s.getSenha(), s.getConfirmarSenha());
         }
         return null;
     }
 
     public List<EpisodioDTO> obterTodasTemporadas(Long id) {
-        Optional<Serie> serie = repositorio.findById(id);
+        Optional<Cadastros> serie = repositorio.findById(id);
 
         if (serie.isPresent()) {
-            Serie s = serie.get();
+            Cadastros s = serie.get();
             return s.getEpisodios().stream()
                     .map(e -> new EpisodioDTO(e.getTemporada(), e.getNumeroEpisodio(), e.getTitulo()))
                     .collect(Collectors.toList());

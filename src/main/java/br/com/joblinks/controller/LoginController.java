@@ -1,8 +1,8 @@
 package br.com.joblinks.controller;
 
 import br.com.joblinks.dto.EpisodioDTO;
-import br.com.joblinks.dto.SerieDTO;
-import br.com.joblinks.service.SerieService;
+import br.com.joblinks.dto.LoginDTO;
+import br.com.joblinks.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,25 +16,25 @@ import java.util.List;
 public class LoginController {
 
    @Autowired
-   private SerieService servico;
+   private LoginService servico;
 
     @GetMapping
-    public List<SerieDTO> obterSeries() {
+    public List<LoginDTO> obterSeries() {
        return servico.obterTodasAsSeries();
     }
 
-    @GetMapping("/top5")
-    public List<SerieDTO> obterTop5Series() {
+    @GetMapping("/email")
+    public List<LoginDTO> obterTop5Series() {
         return servico.obterTop5Series();
     }
 
-    @GetMapping("/lancamentos")
-    public List<SerieDTO> obterLancamentos() {
+    @GetMapping("/senha")
+    public List<LoginDTO> obterLancamentos() {
         return servico.obterLancamentos();
     }
 
     @GetMapping("/{id}")
-    public SerieDTO obterPorId(@PathVariable Long id) {
+    public LoginDTO obterPorId(@PathVariable Long id) {
         return servico.obterPorId(id);
     }
 
@@ -54,7 +54,7 @@ public class LoginController {
     }
 
     @GetMapping("/categoria/{nomeGenero}")
-    public List<SerieDTO> obterSeriesPorCategoria(@PathVariable String nomeGenero){
+    public List<LoginDTO> obterSeriesPorCategoria(@PathVariable String nomeGenero){
         return servico.obterSeriesPorCategoria(nomeGenero);
     }
 }

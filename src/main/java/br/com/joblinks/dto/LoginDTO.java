@@ -1,13 +1,9 @@
 package br.com.joblinks.dto;
 
-import br.com.joblinks.model.Categoria;
-
-public record SerieDTO(Long id,
-                       String titulo,
-                       Integer totalTemporadas,
-                       Double avaliacao,
-                       Categoria genero,
-                       String atores,
-                       String poster,
-                       String sinopse) {
+public record LoginDTO(Long id,
+                       String nome,
+//                       Categoria genero,
+                       String email,
+                       String senha,
+                       String confirmarSenha) {
 }

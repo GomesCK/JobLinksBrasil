@@ -8,33 +8,33 @@ import java.util.List;
 import java.util.OptionalDouble;
 
 @Entity
-@Table(name = "series")
-public class Serie {
+@Table(name = "cadastros")
+public class Cadastros {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String titulo;
+    private String nome;
     private Integer totalTemporadas;
     private Double avaliacao;
     @Enumerated(EnumType.STRING)
     private Categoria genero;
-    private String atores;
-    private String poster;
-    private String sinopse;
+    private String email;
+    private String senha;
+    private String confirmarSenha;
 
     @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Episodio> episodios = new ArrayList<>();
 
-    public Serie() {}
+    public Cadastros() {}
 
-    public Serie(DadosSerie dadosSerie){
-        this.titulo = dadosSerie.titulo();
+    public Cadastros(DadosSerie dadosSerie){
+        this.nome = dadosSerie.titulo();
         this.totalTemporadas = dadosSerie.totalTemporadas();
         this.avaliacao = OptionalDouble.of(Double.valueOf(dadosSerie.avaliacao())).orElse(0);
         this.genero = Categoria.fromString(dadosSerie.genero().split(",")[0].trim());
-        this.atores = dadosSerie.atores();
-        this.poster = dadosSerie.poster();
-        this.sinopse = ConsultaChatGPT.obterTraducao(dadosSerie.sinopse()).trim();
+        this.email = dadosSerie.atores();
+        this.senha = dadosSerie.poster();
+        this.confirmarSenha = ConsultaChatGPT.obterTraducao(dadosSerie.sinopse()).trim();
     }
 
     public Long getId() {
@@ -54,12 +54,12 @@ public class Serie {
         this.episodios = episodios;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public String getNome() {
+        return nome;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public Integer getTotalTemporadas() {
@@ -86,40 +86,40 @@ public class Serie {
         this.genero = genero;
     }
 
-    public String getAtores() {
-        return atores;
+    public String getEmail() {
+        return email;
     }
 
-    public void setAtores(String atores) {
-        this.atores = atores;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getPoster() {
-        return poster;
+    public String getSenha() {
+        return senha;
     }
 
-    public void setPoster(String poster) {
-        this.poster = poster;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
-    public String getSinopse() {
-        return sinopse;
+    public String getConfirmarSenha() {
+        return confirmarSenha;
     }
 
-    public void setSinopse(String sinopse) {
-        this.sinopse = sinopse;
+    public void setConfirmarSenha(String confirmarSenha) {
+        this.confirmarSenha = confirmarSenha;
     }
 
     @Override
     public String toString() {
         return
                 "genero=" + genero +
-                        ", titulo='" + titulo + '\'' +
+                        ", nome='" + nome + '\'' +
                         ", totalTemporadas=" + totalTemporadas +
                         ", avaliacao=" + avaliacao +
-                        ", atores='" + atores + '\'' +
-                        ", poster='" + poster + '\'' +
-                        ", sinopse='" + sinopse + '\'' +
+                        ", email='" + email + '\'' +
+                        ", senha='" + senha + '\'' +
+                        ", confirmarSenha='" + confirmarSenha + '\'' +
                         ", episodios='" + episodios + '\'';
     }
 }
