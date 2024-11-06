@@ -1,7 +1,7 @@
 package br.com.joblinks.service;
 
 import br.com.joblinks.dto.EpisodioDTO;
-import br.com.joblinks.dto.SerieDTO;
+import br.com.joblinks.dto.LoginDTO;
 import br.com.joblinks.model.Categoria;
 import br.com.joblinks.model.Serie;
 import br.com.joblinks.repository.SerieRepository;
@@ -18,30 +18,30 @@ public class SerieService {
     @Autowired
     private SerieRepository repositorio;
 
-    public List<SerieDTO> obterTodasAsSeries() {
+    public List<LoginDTO> obterTodasAsSeries() {
         return converteDados(repositorio.findAll());
     }
 
-    public List<SerieDTO> obterTop5Series() {
+    public List<LoginDTO> obterTop5Series() {
         return converteDados(repositorio.findTop5ByOrderByAvaliacaoDesc());
     }
 
-    private List<SerieDTO> converteDados(List<Serie> series) {
+    private List<LoginDTO> converteDados(List<Serie> series) {
       return series.stream()
-              .map(s -> new SerieDTO(s.getId(), s.getTitulo(), s.getTotalTemporadas(), s.getAvaliacao(), s.getGenero(), s.getAtores(), s.getPoster(), s.getSinopse()))
+              .map(s -> new LoginDTO(s.getId(), s.getTitulo(), s.getTotalTemporadas(), s.getAvaliacao(), s.getGenero(), s.getAtores(), s.getPoster(), s.getSinopse()))
               .collect(Collectors.toList());
     }
 
-    public List<SerieDTO> obterLancamentos() {
+    public List<LoginDTO> obterLancamentos() {
         return converteDados(repositorio.lancamentosMaisRecentes());
     }
 
-    public SerieDTO obterPorId(Long id) {
+    public LoginDTO obterPorId(Long id) {
         Optional<Serie> serie = repositorio.findById(id);
 
         if (serie.isPresent()) {
             Serie s = serie.get();
-            return new SerieDTO(s.getId(), s.getTitulo(), s.getTotalTemporadas(), s.getAvaliacao(), s.getGenero(), s.getAtores(), s.getPoster(), s.getSinopse());
+            return new LoginDTO(s.getId(), s.getTitulo(), s.getTotalTemporadas(), s.getAvaliacao(), s.getGenero(), s.getAtores(), s.getPoster(), s.getSinopse());
         }
         return null;
     }
@@ -65,7 +65,7 @@ public class SerieService {
                 .collect(Collectors.toList());
     }
 
-    public List<SerieDTO> obterSeriesPorCategoria(String nomeGenero) {
+    public List<LoginDTO> obterSeriesPorCategoria(String nomeGenero) {
         Categoria categoria = Categoria.fromPortugues(nomeGenero);
         return converteDados(repositorio.findByGenero(categoria));
     }
