@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LoginRepository extends JpaRepository<Cadastros, Long> {
-    Optional<Cadastros> findByTituloContainingIgnoreCase(String emailName);
+    Optional<Cadastros> findByEmailContainingIgnoreCase(String emailName);
 
-    List<Cadastros> findByAtoresContainingIgnoreCaseAndAvaliacaoGreaterThanEqual(String enderecoEmail, double avaliacao);
+    List<Cadastros> findByEmailContainingIgnoreCaseAndSenhaEqual(String enderecoEmail, String senha);
 
     List<Cadastros> findTop5ByOrderByAvaliacaoDesc();
 

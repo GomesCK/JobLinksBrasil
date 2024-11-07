@@ -10,7 +10,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -19,7 +18,7 @@ public class Principal {
     private ConverteDados conversor = new ConverteDados();
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
     private final String API_KEY = "&apikey=6585022c";
-    private List<DadosSerie> dadosSeries = new ArrayList<>();
+    private List<DadosLogin> dadosSeries = new ArrayList<>();
 
     private LoginRepository repositorio;
     private List<Cadastros> series = new ArrayList<>();
@@ -96,18 +95,18 @@ public class Principal {
     }
 
     private void buscarSerieWeb() {
-        DadosSerie dados = getDadosSerie();
+        DadosLogin dados = getDadosSerie();
         Cadastros cadastros = new Cadastros(dados);
         //dadosSeries.add(dados);
         repositorio.save(cadastros);
         System.out.println(dados);
     }
 
-    private DadosSerie getDadosSerie() {
+    private DadosLogin getDadosSerie() {
         System.out.println("Digite o nome da série para busca");
         var nomeSerie = leitura.nextLine();
         var json = consumo.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY);
-        DadosSerie dados = conversor.obterDados(json, DadosSerie.class);
+        DadosLogin dados = conversor.obterDados(json, DadosLogin.class);
         return dados;
     }
 
@@ -116,7 +115,7 @@ public class Principal {
         System.out.println("Escolha uma série pelo nome");
         var nomeSerie = leitura.nextLine();
 
-        Optional<Cadastros> serie = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
+        Optional<Cadastros> serie = repositorio.findByEmailContainingIgnoreCase(nomeSerie);
 
         if(serie.isPresent()) {
 
@@ -130,13 +129,13 @@ public class Principal {
             }
             temporadas.forEach(System.out::println);
 
-            List<Episodio> episodios = temporadas.stream()
-                    .flatMap(d -> d.episodios().stream()
-                            .map(e -> new Episodio(d.numero(), e)))
-                    .collect(Collectors.toList());
-
-            serieEncontrada.setEpisodios(episodios);
-            repositorio.save(serieEncontrada);
+//            List<Episodio> episodios = temporadas.stream()
+//                    .flatMap(d -> d.episodios().stream()
+//                            .map(e -> new Episodio(d.numero(), e)))
+//                    .collect(Collectors.toList());
+//
+//            serieEncontrada.setEpisodios(episodios);
+//            repositorio.save(serieEncontrada);
         } else {
             System.out.println("Série não encontrada!");
         }
@@ -152,7 +151,7 @@ public class Principal {
     private void buscarSeriePorTitulo() {
         System.out.println("Escolha um série pelo nome: ");
         var nomeSerie = leitura.nextLine();
-        serieBusca = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
+        serieBusca = repositorio.findByEmailContainingIgnoreCase(nomeSerie);
 
         if (serieBusca.isPresent()) {
             System.out.println("Dados da série: " + serieBusca.get());
@@ -167,8 +166,8 @@ public class Principal {
         System.out.println("Qual o nome para busca?");
         var nomeAtor = leitura.nextLine();
         System.out.println("Avaliações a partir de que valor? ");
-        var avaliacao = leitura.nextDouble();
-        List<Cadastros> seriesEncontradas = repositorio.findByAtoresContainingIgnoreCaseAndAvaliacaoGreaterThanEqual(nomeAtor, avaliacao);
+        var senha = leitura.nextLine();
+        List<Cadastros> seriesEncontradas = repositorio.findByEmailContainingIgnoreCaseAndSenhaEqual(nomeAtor, senha);
         System.out.println("Séries em que " + nomeAtor + " trabalhou: ");
         seriesEncontradas.forEach(s ->
                 System.out.println(s.getNome() + " avaliação: " + s.getAvaliacao()));
@@ -203,25 +202,25 @@ public class Principal {
     }
 
     private void buscarEpisodioPorTrecho(){
-        System.out.println("Qual o nome do episódio para busca?");
-        var trechoEpisodio = leitura.nextLine();
-        List<Episodio> episodiosEncontrados = repositorio.episodiosPorTrecho(trechoEpisodio);
-        episodiosEncontrados.forEach(e ->
-                System.out.printf("Série: %s Temporada %s - Episódio %s - %s\n",
-                        e.getSerie().getNome(), e.getTemporada(),
-                        e.getNumeroEpisodio(), e.getTitulo()));
+//        System.out.println("Qual o nome do episódio para busca?");
+//        var trechoEpisodio = leitura.nextLine();
+//        List<Episodio> episodiosEncontrados = repositorio.episodiosPorTrecho(trechoEpisodio);
+//        episodiosEncontrados.forEach(e ->
+//                System.out.printf("Série: %s Temporada %s - Episódio %s - %s\n",
+//                        e.getSerie().getNome(), e.getTemporada(),
+//                        e.getNumeroEpisodio(), e.getTitulo()));
     }
 
     private void topEpisodiosPorSerie(){
-        buscarSeriePorTitulo();
-        if(serieBusca.isPresent()){
-            Cadastros cadastros = serieBusca.get();
-            List<Episodio> topEpisodios = repositorio.topEpisodiosPorSerie(cadastros);
-            topEpisodios.forEach(e ->
-                    System.out.printf("Série: %s Temporada %s - Episódio %s - %s Avaliação %s\n",
-                            e.getSerie().getNome(), e.getTemporada(),
-                            e.getNumeroEpisodio(), e.getTitulo(), e.getAvaliacao()));
-        }
+//        buscarSeriePorTitulo();
+//        if(serieBusca.isPresent()){
+//            Cadastros cadastros = serieBusca.get();
+//            List<Episodio> topEpisodios = repositorio.topEpisodiosPorSerie(cadastros);
+//            topEpisodios.forEach(e ->
+//                    System.out.printf("Série: %s Temporada %s - Episódio %s - %s Avaliação %s\n",
+//                            e.getSerie().getNome(), e.getTemporada(),
+//                            e.getNumeroEpisodio(), e.getTitulo(), e.getAvaliacao()));
+//        }
     }
     private void buscarEpisodiosDepoisDeUmaData(){
         buscarSeriePorTitulo();

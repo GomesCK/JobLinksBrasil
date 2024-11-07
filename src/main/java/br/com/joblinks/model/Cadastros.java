@@ -1,6 +1,5 @@
 package br.com.joblinks.model;
 
-import br.com.joblinks.service.ConsultaChatGPT;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -22,19 +21,19 @@ public class Cadastros {
     private String senha;
     private String confirmarSenha;
 
-    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Episodio> episodios = new ArrayList<>();
+//    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    private List<Episodio> episodios = new ArrayList<>();
 
     public Cadastros() {}
 
-    public Cadastros(DadosSerie dadosSerie){
-        this.nome = dadosSerie.titulo();
-        this.totalTemporadas = dadosSerie.totalTemporadas();
-        this.avaliacao = OptionalDouble.of(Double.valueOf(dadosSerie.avaliacao())).orElse(0);
-        this.genero = Categoria.fromString(dadosSerie.genero().split(",")[0].trim());
-        this.email = dadosSerie.atores();
-        this.senha = dadosSerie.poster();
-        this.confirmarSenha = ConsultaChatGPT.obterTraducao(dadosSerie.sinopse()).trim();
+    public Cadastros(DadosLogin dadosLogin){
+        this.nome = dadosLogin.nome();
+        this.totalTemporadas = dadosLogin.totalTemporadas();
+        this.avaliacao = OptionalDouble.of(Double.valueOf(dadosLogin.avaliacao())).orElse(0);
+        this.genero = Categoria.fromString(dadosLogin.genero().split(",")[0].trim());
+        this.email = dadosLogin.email();
+        this.senha = dadosLogin.senha();
+        this.confirmarSenha = dadosLogin.senha();
     }
 
     public Long getId() {
@@ -45,14 +44,14 @@ public class Cadastros {
         this.id = id;
     }
 
-    public List<Episodio> getEpisodios() {
-        return episodios;
-    }
+//    public List<Episodio> getEpisodios() {
+//        return episodios;
+//    }
 
-    public void setEpisodios(List<Episodio> episodios) {
-        episodios.forEach(e -> e.setSerie(this));
-        this.episodios = episodios;
-    }
+//    public void setEpisodios(List<Episodio> episodios) {
+//        episodios.forEach(e -> e.setSerie(this));
+//        this.episodios = episodios;
+//    }
 
     public String getNome() {
         return nome;
@@ -119,7 +118,8 @@ public class Cadastros {
                         ", avaliacao=" + avaliacao +
                         ", email='" + email + '\'' +
                         ", senha='" + senha + '\'' +
-                        ", confirmarSenha='" + confirmarSenha + '\'' +
-                        ", episodios='" + episodios + '\'';
+                        ", confirmarSenha='" + confirmarSenha + '\'';
+//                        +
+//                        ", episodios='" + episodios + '\'';
     }
 }

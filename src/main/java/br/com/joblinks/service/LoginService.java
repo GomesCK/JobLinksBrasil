@@ -46,35 +46,35 @@ public class LoginService {
         return null;
     }
 
-    public List<EpisodioDTO> obterTodasTemporadas(Long id) {
-        Optional<Cadastros> serie = repositorio.findById(id);
+//    public List<EpisodioDTO> obterTodasTemporadas(Long id) {
+//        Optional<Cadastros> serie = repositorio.findById(id);
+//
+//        if (serie.isPresent()) {
+//            Cadastros s = serie.get();
+//            return s.getEpisodios().stream()
+//                    .map(e -> new EpisodioDTO(e.getTemporada(), e.getNumeroEpisodio(), e.getTitulo()))
+//                    .collect(Collectors.toList());
+//        }
+//        return null;
+//    }
 
-        if (serie.isPresent()) {
-            Cadastros s = serie.get();
-            return s.getEpisodios().stream()
-                    .map(e -> new EpisodioDTO(e.getTemporada(), e.getNumeroEpisodio(), e.getTitulo()))
-                    .collect(Collectors.toList());
-        }
-        return null;
-    }
-
-    public List<EpisodioDTO> obterTemporadasPorNumero(Long id, Long numero) {
-        return repositorio.obterEpisodiosPorTemporada(id, numero)
-                .stream()
-                .map(e -> new EpisodioDTO(e.getTemporada(), e.getNumeroEpisodio(), e.getTitulo()))
-                .collect(Collectors.toList());
-    }
+//    public List<EpisodioDTO> obterTemporadasPorNumero(Long id, Long numero) {
+//        return repositorio.obterEpisodiosPorTemporada(id, numero)
+//                .stream()
+//                .map(e -> new EpisodioDTO(e.getTemporada(), e.getNumeroEpisodio(), e.getTitulo()))
+//                .collect(Collectors.toList());
+//    }
 
     public List<LoginDTO> obterSeriesPorCategoria(String nomeGenero) {
         Categoria categoria = Categoria.fromPortugues(nomeGenero);
         return converteDados(repositorio.findByGenero(categoria));
     }
 
-    public List<EpisodioDTO> obterTopEpisodios(Long id) {
-        var serie = repositorio.findById(id).get();
-        return repositorio.topEpisodiosPorSerie(serie)
-                .stream()
-                .map(e -> new EpisodioDTO(e.getTemporada(), e.getNumeroEpisodio(), e.getTitulo()))
-                .collect(Collectors.toList());
-    }
+//    public List<EpisodioDTO> obterTopEpisodios(Long id) {
+//        var serie = repositorio.findById(id).get();
+//        return repositorio.topEpisodiosPorSerie(serie)
+//                .stream()
+//                .map(e -> new EpisodioDTO(e.getTemporada(), e.getNumeroEpisodio(), e.getTitulo()))
+//                .collect(Collectors.toList());
+//    }
 }
