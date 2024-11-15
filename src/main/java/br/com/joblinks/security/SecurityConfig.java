@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())  // Desabilita a proteção CSRF
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/usuarios").permitAll()  // Permite acesso a /cadastro
+                                .requestMatchers("/api/usuarios/login", "/api/usuarios/cadastro").permitAll()  // Permite acesso a /cadastro
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults());  // Configuração básica de autenticação
